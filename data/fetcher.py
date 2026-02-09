@@ -17,14 +17,16 @@ def fetch_data(ticker, interval, start=None):
     stock = yf.Ticker(ticker)
 
     period = get_period_by_interval(interval, ticker)
-    df = None
 
     if start:
-        # 🔥 タイムゾーン除去
         start_clean = pd.to_datetime(start).tz_localize(None)
         df = stock.history(start=start_clean, interval=interval)
     else:
         df = stock.history(period=period, interval=interval)
+
+    if df.empty:
+        return None
+
     df = df.reset_index()
 
     # Datetime列統一
@@ -42,12 +44,12 @@ def fetch_data(ticker, interval, start=None):
     }, inplace=True)
 
     df["ticker"] = ticker
-    df["interval"] = interval
+    df["time_interval"] = interval  # ★ 修正
 
     df = df[[
         "ticker",
         "datetime",
-        "interval",
+        "time_interval",
         "open",
         "high",
         "low",

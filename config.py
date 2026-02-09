@@ -18,4 +18,11 @@ INTERVALS = [
     "1mo",
 ]
 
-DB_NAME = "stock.db"
+DB_NAME = "stockdb"
+
+
+DB_USER = "StockDB"
+DB_PASSWORD = "Kenken0601"
+
+DB_SOCKET_PATH = "/cloudsql/stockextract-486708:asia-northeast1:free-trial-first-project"
+
