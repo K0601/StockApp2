@@ -4,7 +4,7 @@ TICKERS = [
     "^N225",
     #"^TPX",TOPIXのデータは取得できない模様
     "^DJI",
-    "^GSPC",
+    "^GSPC", #S&P500
     "7203.T",
 ]
 
