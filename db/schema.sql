@@ -27,3 +27,20 @@ CREATE TABLE IF NOT EXISTS price_data (
     UNIQUE(ticker, datetime, interval)
 );
 
+CREATE TABLE IF NOT EXISTS training_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticker TEXT,
+    interval TEXT,
+    episode INTEGER,
+    reward REAL,
+    created_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS trade_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticker TEXT,
+    datetime TEXT,
+    action TEXT,
+    price REAL
+);
+
