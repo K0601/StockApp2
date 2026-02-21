@@ -115,6 +115,14 @@ def show_chart(df, trade_history=None):
         st.warning("データなし")
         return
 
+    # ==========================
+    # 🔹 UTC → 日本時間へ変換
+    # ==========================
+    if df.index.tz is None:
+        df.index = pd.to_datetime(df.index).tz_localize("UTC").tz_convert("Asia/Tokyo")
+    else:
+        df.index = df.index.tz_convert("Asia/Tokyo")
+
     apds = []
 
     # ボリンジャー
@@ -144,19 +152,35 @@ def show_chart(df, trade_history=None):
 
     ax = axes[0]
 
+    # ==========================
+    # 🔹 売買マーク描画（色変更）
+    # ==========================
     if trade_history:
-        print(trade_history)
         for trade in trade_history:
-            d = pd.to_datetime(trade["date"])
-            
+            d = pd.to_datetime(trade["date"], utc=True).tz_convert("Asia/Tokyo")
+
             if d in df.index:
                 x = df.index.get_loc(d)
+
                 if trade["action"] == "BUY":
-                    ax.annotate("▲",(x, df.loc[d,"high"]))
+                    ax.annotate(
+                        "▲",
+                        (x, df.loc[d, "high"]),
+                        color="red",
+                        fontsize=12,
+                        ha="center"
+                    )
                 else:
-                    ax.annotate("▼",(x, df.loc[d,"low"]))
+                    ax.annotate(
+                        "▼",
+                        (x, df.loc[d, "low"]),
+                        color="green",
+                        fontsize=12,
+                        ha="center"
+                    )
 
     st.pyplot(fig)
+
 
 # =====================
 # Yahoo Financeからデータ取得
